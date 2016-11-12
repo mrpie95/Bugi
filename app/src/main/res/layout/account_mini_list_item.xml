@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffffff"
+        android:id="@+id/accountListBG"
+              android:paddingBottom="5sp"
+              android:paddingTop="5sp"
+    >
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:paddingLeft="20sp"
+        >
+
+
+        <TextView
+            android:id="@+id/exp_act_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="10sp"
+            android:layout_gravity="left"
+            android:textSize="21sp"
+            android:text="Name"
+            android:textColor="#000000"/>
+
+        <ImageView
+            android:layout_width="50sp"
+            android:layout_height="50sp"
+            android:id="@+id/act_icon"
+            android:src="@drawable/ic_red_small"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>

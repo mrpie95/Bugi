@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:gravity="center"
+              android:padding="10dp"
+              android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Name"
+        android:id="@+id/textView4"
+        android:layout_gravity="left"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/dialog_act_name"
+        android:layout_gravity="center_horizontal"
+        android:paddingBottom="10sp"
+        android:maxLines="1"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Starting Balance"
+        android:id="@+id/textView7"
+        android:layout_gravity="left"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/act_dialog_strBalance"
+        android:layout_gravity="center_horizontal"
+        android:paddingBottom="10sp"
+        android:maxLines="1"
+        android:digits="0123456789.-"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Type"
+        android:id="@+id/textView5"
+        android:layout_gravity="left"
+        />
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/act_dialog_type"
+        android:drawSelectorOnTop="true"
+        android:entries="@array/account_types"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Colour"
+        android:id="@+id/textView6"
+        android:layout_gravity="left"
+        android:paddingBottom="10sp"
+        />
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/act_dialog_colour_spin"
+        android:drawSelectorOnTop="true"
+        android:entries="@array/colour_range"
+        />
+
+    <ImageView
+        android:id="@+id/act_dialog_colour"
+        android:layout_width="156dp"
+        android:layout_height="159dp"
+        android:src="@drawable/ic_blue_small" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/atc_dialog_dismiss"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Dismiss"
+            android:layout_weight="1"
+            android:backgroundTint="#ffffff"
+            android:elevation="4sp"
+            />
+
+        <Button
+            android:id="@+id/atc_dialog_add"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add"
+            android:layout_weight="1"
+            android:backgroundTint="#ffffff"
+            android:elevation="4sp"
+            />
+    </LinearLayout>
+
+</LinearLayout>
