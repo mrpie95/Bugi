@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -12,7 +13,6 @@ import android.widget.TextView;
 import com.example.michael.test2.R;
 
 import java.util.ArrayList;
-
 
 public class accountListTEST extends ArrayAdapter<Account>
 {
@@ -36,7 +36,7 @@ public class accountListTEST extends ArrayAdapter<Account>
         TextView txtTitle2 = (TextView) rowView.findViewById(R.id.txt2);
         TextView balance = (TextView) rowView.findViewById(R.id.account_accountBalanace);
 //        RelativeLayout layout = (RelativeLayout) rowView.findViewById(R.id.accountListBG);
-        LinearLayout layout = (LinearLayout) rowView.findViewById(R.id.accountListBG);
+//        LinearLayout layout = (LinearLayout) rowView.findViewById(R.id.accountListBG);
         ImageView colour =  (ImageView) rowView.findViewById(R.id.account_icon);
 
         colour.setImageResource((account.get(position).getColourResource()));

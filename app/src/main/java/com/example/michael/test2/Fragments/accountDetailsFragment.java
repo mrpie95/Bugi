@@ -1,40 +1,40 @@
 package com.example.michael.test2.Fragments;
 
-import android.app.Fragment;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 
-import com.example.michael.test2.R;
-import com.jjoe64.graphview.GraphView;
+import java.util.ArrayList;
+import java.util.List;
 
-public class accountDetailsFragment extends Fragment
+class DetailAdapter extends FragmentPagerAdapter
 {
-    private GraphView graphView;
+    private final List<Fragment> mFragmentList = new ArrayList<>();
+    private final List<String> mFragmentTitleList = new ArrayList<>();
 
-    public accountDetailsFragment()
-    {
-
+    public DetailAdapter(FragmentManager manager) {
+        super(manager);
     }
 
     @Override
-    public  void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
+    public Fragment getItem(int position) {
+        return mFragmentList.get(position);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        View view = inflater.inflate(R.layout.fragment_test, container, false);
-
-
-        return view;
+    public int getCount() {
+        return mFragmentList.size();
     }
 
+    public void addFragment(Fragment fragment, String title) {
+        mFragmentList.add(fragment);
+        mFragmentTitleList.add(title);
+    }
 
-
+    @Override
+    public CharSequence getPageTitle(int position) {
+        return mFragmentTitleList.get(position);
+    }
 }
 
 

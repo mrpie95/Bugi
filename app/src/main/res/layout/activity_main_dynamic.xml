@@ -4,22 +4,20 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
 
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="2">
+    android:weightSum="2"
+    android:orientation="vertical">
 
         <LinearLayout
             android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="374dp"
+            android:layout_height="237dp"
             android:layout_alignParentTop="true"
             android:weightSum="0"
             android:layout_alignParentEnd="true"
             android:id="@+id/view1"
-            android:layout_weight="1"
             android:background="@android:color/white"
-            android:paddingBottom="15sp"
             >
 
             </LinearLayout>

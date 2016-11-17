@@ -3,9 +3,11 @@ package com.example.michael.test2.Fragments;
 import android.app.Fragment;
 import android.graphics.Color;
 import android.os.Bundle;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 import com.example.michael.test2.Java.Account;
 import com.example.michael.test2.Java.Expense;
@@ -13,12 +15,16 @@ import com.example.michael.test2.R;
 import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
+import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.StringTokenizer;
 
 public class graphSingleFragment extends Fragment
 {
@@ -76,51 +82,41 @@ public class graphSingleFragment extends Fragment
         double ymax = 0;
         double ymin = 0;
 
+        xmin = accounts.get(0).getExpenses().get(0).getDate().getTime();
+
         for (int j = 0; j < accounts.size(); j++)
         {
             act = accounts.get(j);
             exp = act.getExpenses();
-            xmin = exp.get(0).getDate().getTime();
-
-            graphView.removeAllSeries();
+//            xmin = exp.get(0).getDate().getTime();
 
             DataPoint[] data = new DataPoint[exp.size()];
 
-            Double totalBalance = act.getStartingBalance();
+            Double totalBalance = 0.0;
             //sets the x and y points for each expense
             for (int i = 0; i < exp.size(); i++)
             {
                 totalBalance += exp.get(i).getCost();
                 double time = exp.get(i).getDate().getTime();
 
-                if (time < xmin)
+                if (xmin <= time)
                     xmin =  time;
 
-                if (time > xmax)
-                    xmax = time;
+//                if (time > xmax)
+//                    xmax = time;
 
-//                if (totalBalance < ymin)
-//                    ymin = totalBalance;
+                if (ymin > totalBalance)
+                    ymin = totalBalance;
+
                 if (totalBalance > ymax)
                     ymax = totalBalance;
 
                 data[i] = new DataPoint(exp.get(i).getDate(), totalBalance);
 
             }
-
-
-//            if ((exp.get(i).getDate().getTime()) > xmax)
-
-
-//            xmax = exp.get(exp.size()-1).getDate().getTime();
-
-
-
             LineGraphSeries<DataPoint> series = new LineGraphSeries<>(data);
-
             series.setColor(act.getColourInt());
             series.setThickness(15);
-
             graphView.addSeries(series);
         }
 
@@ -138,7 +134,9 @@ public class graphSingleFragment extends Fragment
                     // milliseconds to date.
                     Calendar calendar = Calendar.getInstance();
                     calendar.setTimeInMillis((long)value);
+
                     String result = formatter.format(calendar.getTime());
+
                     return result;
                 } else {
                     // show currency for y values
@@ -152,13 +150,14 @@ public class graphSingleFragment extends Fragment
         graphView.getGridLabelRenderer().setHumanRounding(false);
         graphView.getGridLabelRenderer().setLabelsSpace(3);
         graphView.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.BOTH);
-
-        graphView.getViewport().setMaxY(ymax);
-        graphView.getViewport().setMinY(0.0);
-
-        graphView.getViewport().setMaxX(xmax);
-        graphView.getViewport().setXAxisBoundsManual(true);
         graphView.getGridLabelRenderer().setHumanRounding(false);
+
+        graphView.getViewport().setMaxY(ymax + 0.08*ymax);
+        graphView.getViewport().setMinY(ymin - 0.08*ymin);
+//      graphView.getViewport().setMaxX(xmax + 864000000);
+        graphView.getViewport().setMinX(xmin);
+//      graphView.getViewport().setXAxisBoundsManual(true);
+        graphView.getViewport().setYAxisBoundsManual(true);
 
         GridLabelRenderer label =  graphView.getGridLabelRenderer();
         label.setGridColor(Color.BLACK);

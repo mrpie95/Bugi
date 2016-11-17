@@ -12,6 +12,5 @@
         android:id="@+id/graph2"
         android:paddingRight="20sp"
 
-
         />
 </LinearLayout>

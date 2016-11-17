@@ -14,6 +14,11 @@ public class Expense
     private Date date;
     private Location location;
 
+    public Expense()
+    {
+
+    }
+
     public Expense (String description, Double cost, Date date)
     {
         this.description = description;

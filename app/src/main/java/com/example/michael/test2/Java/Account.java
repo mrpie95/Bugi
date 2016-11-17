@@ -40,6 +40,11 @@ public class Account implements Parcelable
         }
     };
 
+    public Account()
+    {
+
+    }
+
     private Account(Parcel in) {
         name = in.readString();
         type = in.readString();
@@ -59,44 +64,7 @@ public class Account implements Parcelable
         budgets = new ArrayList<Budget>();
     }
 
-    public void AddExpense (Expense cost)
-    {
-        expenses.add(cost);
-    }
-
-    public ArrayList<Expense> getExpenses()
-    {
-        return expenses;
-    }
-
-    public double getStartingBalance()
-    {
-        return expenses.get(0).getCost();
-    }
-
-    public double getBalance()
-    {
-        //do calculations
-//        if ((expenses.size() == 0) || (expenses == null))
-//        {
-//            return balance;
-//        }
-//        else
-//        {
-            Double calcBalance = 0.0;
-
-            for (Expense e: expenses)
-            {
-               calcBalance += e.getCost();
-            }
-            return calcBalance;
-//        }
-    }
-
-    public String getName()
-    {
-        return name;
-    }
+    public String getName() { return name; }
 
     public void setName(String name)
     {
@@ -113,10 +81,42 @@ public class Account implements Parcelable
         this.type = type;
     }
 
+    public void setColour(String colour)
+    {
+        this.colour = colour;
+    }
+
     public String getColour()
     {
         return colour;
     }
+
+    public ArrayList<Expense> getExpenses()
+    {
+        return expenses;
+    }
+
+    public void AddExpense (Expense cost)
+    {
+        expenses.add(cost);
+    }
+
+    public double getBalance()
+    {
+        Double calcBalance = 0.0;
+
+        for (Expense e: expenses)
+        {
+            calcBalance += e.getCost();
+        }
+        return calcBalance;
+    }
+
+    public double getStartingBalance()
+    {
+        return expenses.get(0).getCost();
+    }
+
 
     public int getColourResource()
     {
@@ -126,11 +126,6 @@ public class Account implements Parcelable
     public int getColourInt()
     {
         return findColour(colour);
-    }
-
-    public void setColour(String col)
-    {
-        col = colour;
     }
 
     public void AddBudgets (Budget budget)

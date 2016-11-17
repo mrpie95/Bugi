@@ -66,6 +66,7 @@ public class AddExpenseFragment extends DialogFragment{
 
         SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
         date.setText(format.format(dateData));
+        date.setText(format.format(dateData));
 
 
         Button dismiss = (Button) rootView.findViewById(R.id.exp_dialog_dismiss);
@@ -128,7 +129,7 @@ public class AddExpenseFragment extends DialogFragment{
     }
 
     //adds the expense with true beings an expense, date conflict checks and sorting of dates
-    // to all for adding dates in the past 
+    // to all for adding dates in the past
     private void addCost(boolean exp)
     {
         String name  = desc.getText().toString();

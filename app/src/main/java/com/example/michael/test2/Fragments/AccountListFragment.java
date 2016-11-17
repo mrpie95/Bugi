@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.michael.test2.Activity.MainActivity;
 import com.example.michael.test2.Java.Account;
 import com.example.michael.test2.Java.Communicator;
 import com.example.michael.test2.Java.Expense;
@@ -23,8 +24,8 @@ import java.util.Calendar;
 public class AccountListFragment extends ListFragment
 {
     private View row;
-    private ListView accountList;
-    private ArrayList<Account> accounts;
+    private ListView accountList = null;
+    private ArrayList<Account> accounts = null;
 
     @Override
     public  void onCreate(Bundle savedInstanceState)
@@ -37,12 +38,17 @@ public class AccountListFragment extends ListFragment
 
         View view = inflater.inflate(R.layout.fragment_list , container, false);
 
-        accounts = getArguments().getParcelableArrayList("accounts1");
-        accountList = (ListView) view.findViewById(R.id.listView);
+//        if (savedInstanceState != null)
+//        {
+        if (getArguments() != null)
+        {
+            accounts = getArguments().getParcelableArrayList("accounts1");
+            accountList = (ListView) view.findViewById(R.id.listView);
+        }
 
         return view;
     }
-@Override
+    @Override
     public void onActivityCreated(Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
@@ -58,7 +64,7 @@ public class AccountListFragment extends ListFragment
                     row = view;
                     if (row != null)
                     {
-//                    row.setBackgroundColor(Color.RED);
+                        ((MainActivity) getActivity()).AccuontDetails();
                         Toast.makeText(getActivity(), "You Clicked at " + position, Toast.LENGTH_SHORT).show();
                     }
                 }

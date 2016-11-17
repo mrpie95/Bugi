@@ -22,32 +22,135 @@ import android.widget.Toast;
 import com.example.michael.test2.Fragments.AccountListFragment;
 import com.example.michael.test2.Fragments.AddAccountFragment;
 import com.example.michael.test2.Fragments.AddExpenseFragment;
+import com.example.michael.test2.Fragments.CircleLoadingFragment;
 import com.example.michael.test2.Fragments.graphFragment;
 import com.example.michael.test2.Java.Account;
 import com.example.michael.test2.Java.Expense;
 import com.example.michael.test2.R;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
 {
     AccountListFragment list;
     ArrayList<Account> accounts = new ArrayList<Account>();
+    ArrayList<Account> test1;
+    boolean loaded = false;
+    boolean test = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("accounts");
+
+//        Account act = new Account("name", "test", "test", 0.0);
+
+
+//        myRef.setValue("i  love kotek","i  love kotek");
+
         intialiseApp();
+
+        // myRef.setValue(accounts);
+
+
+//        FirebaseDatabase test = myRef.getDatabase()
+
+        myRef.addValueEventListener(new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
+                if (!test)
+                {
+                    GenericTypeIndicator<ArrayList<Account>> t = new GenericTypeIndicator<ArrayList<Account>>()
+                    {
+                    };
+                    test1 = dataSnapshot.getValue(t);
+
+                    if (!test).
+
+                    updateAccountList();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError)
+            {
+
+            }
+        });
+
+
+        myRef.addListenerForSingleValueEvent(new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
+                GenericTypeIndicator<ArrayList<Account>> t = new GenericTypeIndicator<ArrayList<Account>>() {};
+                test1 = dataSnapshot.getValue(t);
+                loaded = true;
+
+                if (!test)
+                updateAccountList();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError)
+            {
+
+            }
+        });
+
+
     }
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+
+        DatabaseReference myRef;
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        myRef = database.getReference("accounts");
+        test = true;
+
+        if (loaded)
+        {
+            myRef.setValue(test1);
+        }
+
+        database.purgeOutstandingWrites();
+        myRef.goOffline();
+
+    }
+
 
     @Override
     public void onBackPressed()
     {
-
+//        this.finishAffinity();
         // super.onBackPressed(); // Comment this super call to avoid calling finish()
+        if (getFragmentManager().getBackStackEntryCount() == 0)
+        {
+            this.finish();
+        } else {
+            getFragmentManager().popBackStack();
+        }
     }
 
     @Override
@@ -69,17 +172,15 @@ public class MainActivity extends AppCompatActivity
                 dialogFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.CustomDialog);
                 dialogFragment.show(fm, "Sample Fragment");
 
-//                accounts.addAll(mockAccounts(3));
-//                updateAccountList();
                 return true;
 
             case R.id.btn2:
-                accounts.remove(accounts.size()-1);
+                test1.remove(test1.size()-1);
                 updateAccountList();
                 return true;
 
             case R.id.test_item:
-                accounts.get(0).getExpenses().remove(accounts.get(0).getExpenses().size()-1);
+                test1.get(0).getExpenses().remove(test1.get(0).getExpenses().size()-1);
                 updateAccountList();
                 return true;
 
@@ -90,35 +191,64 @@ public class MainActivity extends AppCompatActivity
         return false;
     }
 
+    public void AccuontDetails()
+    {
+//        Intent intent = new Intent(this, AccountDetailActivity.class);
+//        EditText editText = (EditText) findViewById(R.id.edit_message);
+//        String message = editText.getText().toString();
+
+//        intent.putExtra("ACCOUNT_DATA", account);
+//        startActivity(intent);
+    }
+
 
     //update the list to display all current account and
-    //display the coreseponding graphs
+    //display the correseponding graphs
     public void updateAccountList()
     {
         Bundle bundle = new Bundle();
-        bundle.putParcelableArrayList("accounts1", accounts);
+
+        if (test1 != null)
+            bundle.putParcelableArrayList("accounts1", test1);
 
         graphFragment graph = new graphFragment();
-        graph.setArguments(bundle);
+        if (test1 != null)
+            graph.setArguments(bundle);
         FragmentManager fragManager = getFragmentManager();
         FragmentTransaction tranView1 = fragManager.beginTransaction();
         tranView1.replace(R.id.view1, graph);
-        tranView1.addToBackStack(null);
         tranView1.commit();
 
-        list = new AccountListFragment();
-        list.setArguments(bundle);
+        if (loaded)
+        {
+            list = new AccountListFragment();
+            if (test1 != null)
+                list.setArguments(bundle);
 
-        fragManager = getFragmentManager();
-        FragmentTransaction tranView2 = fragManager.beginTransaction();
-        tranView2.replace(R.id.view2, list);
-        tranView2.addToBackStack(null);
-        tranView2.commit();
+            fragManager = getFragmentManager();
+            FragmentTransaction tranView2 = fragManager.beginTransaction();
+            tranView2.replace(R.id.view2, list);
+            //tranView2.addToBackStack(null);
+            tranView2.commit();
+        }
+        else
+        {
+            CircleLoadingFragment loading = new CircleLoadingFragment();
+            fragManager = getFragmentManager();
+            FragmentTransaction tranView2 = fragManager.beginTransaction();
+            tranView2.replace(R.id.view2, loading);
+            tranView2.commit();
+        }
+
+
     }
 
     public void addAccount(Account act)
     {
-        accounts.add(act);
+        if (test1 == null)
+            test1 = new ArrayList<Account>();
+
+        test1.add(act);
         updateAccountList();
     }
 
@@ -131,12 +261,13 @@ public class MainActivity extends AppCompatActivity
     private void intialiseApp()
     {
 
+        updateAccountList();
         //**** needs fixing ****
         ActionBar actionBar = getActionBar();
         if (actionBar != null)
         {
             actionBar.setBackgroundDrawable(new ColorDrawable(Color.rgb(0, 128, 255)));
-//            actionBar.setDisplayShowTitleEnabled(false);
+            //actionBar.setDisplayShowTitleEnabled(false);
             actionBar.setTitle("Bugi");
         }
 
@@ -146,7 +277,7 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view)
             {
                 Bundle bundle = new Bundle();
-                bundle.putParcelableArrayList("accounts1", accounts);
+                bundle.putParcelableArrayList("accounts1", test1);
 
                 FragmentManager fm = getFragmentManager();
                 AddExpenseFragment dialogFragment = new AddExpenseFragment ();
@@ -156,9 +287,6 @@ public class MainActivity extends AppCompatActivity
                 dialogFragment.show(fm, "");
             }
         });
-
-        accounts.addAll(mockAccounts(1));
-        updateAccountList();
     }
 
     //Generate mock test accounts with data
@@ -184,7 +312,7 @@ public class MainActivity extends AppCompatActivity
 
             results.add(act);
         }
-         if (i >= 2)
+        if (i >= 2)
         {
             Calendar calendar = Calendar.getInstance();
             act = new Account("test 3", "mastercard", "blue", 400.00);
